@@ -1,9 +1,11 @@
 // src/components/SurveyForm.jsx
 import React, { useState } from 'react';
-import emailjs from '@emailjs/browser';
+import { Toaster, toast } from 'react-hot-toast';
+import { formatEmailBody } from './EmailFormatter';
 
-// Initialize EmailJS once with your public user ID
-emailjs.init('YOUR_USER_ID');
+// read in your env values
+const FUNCTION_URL = import.meta.env.VITE_EMAIL_FUNCTION_URL;
+const EMAIL_TO     = import.meta.env.VITE_EMAIL_TO || 'siren.hittini@zaintech.com';
 
 export default function SurveyForm() {
   // State for each of the 15 fields
@@ -28,9 +30,9 @@ export default function SurveyForm() {
   const [azureServices, setAzureServices] = useState([]);
   const [otherAzure, setOtherAzure] = useState('');
   const [submissionDate, setSubmissionDate] = useState('');
-  // NEW: error & success states
-  const [error, setError] = useState('');
-  const [, setSuccess] = useState('');
+  // NEW: submission state for disabling button
+  const [submitting, setSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const toggle = (arr, setter, val) => {
     setter(prev =>
@@ -38,29 +40,27 @@ export default function SurveyForm() {
     );
   };
 
-  const handleSubmit = e => {
+  const validate = () => {
+    const newErrors = {};
+    ['customerName','projectScope','detailedRequirement','businessPOC','technicalPOC','startDate','endDate','milestones','submissionDate'].forEach(field => {
+      if (!eval(field)) newErrors[field] = true;
+    });
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async e => {
     e.preventDefault();
-    // Validate required fields
-    if (
-      !customerName ||
-      !projectScope ||
-      !detailedRequirement ||
-      !businessPOC ||
-      !technicalPOC ||
-      !startDate ||
-      !endDate ||
-      !milestones ||
-      !submissionDate
-    ) {
-      setError('❌ Please fill in all required fields.');
-      setSuccess('');
+    if (!validate()) {
+      toast.error('Please fill in all required fields.');
       return;
     }
-    setError('');
 
-    // Prepare template parameters, including your personal email
-    const templateParams = {
-      to_email: 'siren.hittini@zaintech.com',
+    setSubmitting(true);
+    toast.success('Sending your responses…');
+
+    // build email body
+    const emailBody = formatEmailBody({
       customerName,
       projectScope,
       detailedRequirement,
@@ -82,32 +82,37 @@ export default function SurveyForm() {
       azureServices: azureServices.join(', '),
       otherAzure,
       submissionDate
+    }, EMAIL_TO);
+
+    const payload = {
+      name:        EMAIL_TO,
+      email:       EMAIL_TO,
+      toEmail:     EMAIL_TO,
+      companyName: 'ZainTECH',
+      message:     emailBody
     };
 
-    // Send email via EmailJS (replace the IDs with your own)
-    emailjs
-      .send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
-        templateParams
-      )
-      .then(
-        () => {
-          setSuccess('✅ Form submitted successfully! A confirmation email has been sent.');
-          // Optionally reset form fields here
-        },
-        () => {
-          setError('❌ Failed to send form. Please try again later.');
-        }
-      );
+    try {
+      const res = await fetch(FUNCTION_URL, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(await res.text() || res.statusText);
+      toast.success('Email sent successfully!');
+      // Optionally reset form here
+    } catch (err) {
+      console.error(err);
+      toast.error(`Failed to send email: ${err.message}`);
+    } finally {
+      setTimeout(() => setSubmitting(false), 2000);
+    }
   };
 
   return (
     <div className="w-screen min-h-screen bg-gray-100 flex items-center justify-center p-6">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-2xl p-8 max-w-xl w-full"
-      >
+      <Toaster position="top-center" />
+      <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-2xl p-8 max-w-xl w-full">
         {/* Logo */}
         <div className="flex justify-center mb-6">
           <img
@@ -465,23 +470,14 @@ export default function SurveyForm() {
         </div>
 
         {/* Submit */}
-        <button
+         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg mt-6"
+          disabled={submitting}
+          className={`w-full ${submitting ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'} text-white font-semibold py-3 rounded-lg mt-6`}
         >
-          Submit Request
+          {submitting ? 'Sending...' : 'Submit Request'}
         </button>
-
-        {/* Error message */}
-        {error && (
-          <p className="mt-4 text-red-600 text-center">
-            {error}
-          </p>
-        )}
       </form>
     </div>
   );
 }
-
-
-
