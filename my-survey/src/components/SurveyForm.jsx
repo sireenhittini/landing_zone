@@ -19,6 +19,8 @@ export default function SurveyForm() {
   const [businessPOC, setBusinessPOC] = useState('');
   const [technicalPOC, setTechnicalPOC] = useState('');
   const [startDate, setStartDate] = useState('');
+  const [azureService, setAzureService]           = useState('');
+const [otherAzureService, setOtherAzureService] = useState('');
   const [endDate, setEndDate] = useState('');
   const [milestones, setMilestones] = useState('');
   const [budgetAllocation, setBudgetAllocation] = useState('');
@@ -263,27 +265,41 @@ export default function SurveyForm() {
               onChange={e => setTechnicalPOC(e.target.value)}
             />
           </div>
+{/* 8. Anticipated Project Start and End Dates */}
+<div className="mb-4 text-left">
+  <label className="block text-gray-700 font-medium mb-1">
+    8. Anticipated Project Start and End Dates
+  </label>
 
-          {/* 8. Anticipated Project Start and End Dates */}
-          <div className="mb-4 text-left">
-            <label className="block text-gray-700 font-medium mb-1">
-             8. Anticipated Project Start and End Dates
-            </label>
-            <input
-              type="date"
-              className="block w-full border border-gray-300 rounded-md px-4 py-2
-                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              value={startDate}
-              onChange={e => setStartDate(e.target.value)}
-            />
-            <input
-              type="date"
-              className="block w-full border border-gray-300 rounded-md px-4 py-2 mt-2
-                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              value={endDate}
-              onChange={e => setEndDate(e.target.value)}
-            />
-          </div>
+  {/* Start Date with inline label */}
+  <div className="relative">
+    <input
+      type="date"
+      value={startDate}
+      onChange={e => setStartDate(e.target.value)}
+      className="w-full pl-28 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+    <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none">
+      Start Date
+    </span>
+  </div>
+
+  {/* End Date with inline label */}
+  <div className="relative mt-2">
+    <input
+      type="date"
+      value={endDate}
+      onChange={e => setEndDate(e.target.value)}
+      className="w-full pl-28 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+    <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none">
+      End Date
+    </span>
+  </div>
+</div>
+
+
+
 
          {/* 9. Critical Project Milestones */}
           <div className="mb-4 text-left">
@@ -404,41 +420,35 @@ export default function SurveyForm() {
           </div>
 
           {/* 14. Azure Services Already in Use (if any) */}
-          <div className="mb-4 text-left">
-            <label className="block text-gray-700 font-medium mb-1">
-              14. Azure Services Already in Use (if any)
-            </label>
-            <div className="grid grid-cols-2 gap-2">
-              {[
-                'Azure Active Directory',
-                'Azure Sentinel',
-                'Azure Virtual Machines',
-                'Azure Policy',
-                'None',
-                'Other'
-              ].map(svc => (
-                <label key={svc} className="inline-flex items-center">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox accent-blue-600"
-                    checked={azureServices.includes(svc)}
-                    onChange={() => toggle(azureServices, setAzureServices, svc)}
-                  />
-                  <span className="ml-2 text-gray-700">{svc}</span>
-                </label>
-              ))}
-            </div>
-            {azureServices.includes('Other') && (
-              <input
-                type="text"
-                className="block w-full border border-gray-300 rounded-md px-4 py-2 mt-2
-                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Please specify"
-                value={otherAzure}
-                onChange={e => setOtherAzure(e.target.value)}
-              />
-            )}
-          </div>
+<div className="mb-4 text-left">
+  <label className="block text-gray-700 font-medium mb-1">
+    14. Azure Services Already in Use (if any)
+  </label>
+  <select
+    value={azureService}
+    onChange={e => setAzureService(e.target.value)}
+    className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    required
+  >
+    <option value="" disabled>— Select a service —</option>
+    <option value="Azure Active Directory">Azure Active Directory</option>
+    <option value="Azure Sentinel">Azure Sentinel</option>
+    <option value="Azure Virtual Machines">Azure Virtual Machines</option>
+    <option value="Azure Policy">Azure Policy</option>
+    <option value="None">None</option>
+    <option value="Other">Other</option>
+  </select>
+
+  {azureService === 'Other' && (
+    <input
+      type="text"
+      className="w-full border border-gray-300 rounded-md px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      placeholder="Please specify"
+      value={otherAzureService}
+      onChange={e => setOtherAzureService(e.target.value)}
+    />
+  )}
+</div>
 
           {/* 15. Date of Submission */}
           <div className="mb-4 text-left">
