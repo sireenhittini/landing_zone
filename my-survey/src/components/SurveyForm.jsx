@@ -135,11 +135,12 @@ export default function SurveyForm() {
         />
       </div>
  
-      {/* Title */}
-      <h2 className="text-3xl font-extrabold text-center text-gray-900 mb-6">
-        Azure Landing Zone Discovery Form
-      </h2>
- 
+{/* Title */}
+<h2 className="text-3xl font-extrabold text-center text-gray-900 mb-8 whitespace-nowrap">
+  Azure Landing Zone Discovery Form
+</h2>
+
+
       <div className="space-y-8">
         {/* 1. Customer Name */}
         <div className="mb-8 text-left">
