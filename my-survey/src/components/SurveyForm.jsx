@@ -124,7 +124,7 @@ export default function SurveyForm() {
 
         {/* Title */}
         <h2 className="text-3xl font-extrabold text-center text-gray-900 mb-6">
-          ZainTECH – Azure Landing Zone Discovery Form
+           Azure Landing Zone Discovery Form
         </h2>
 
         <div className="space-y-4">
@@ -316,91 +316,93 @@ export default function SurveyForm() {
             />
           </div>
 
-          {/* 10. Budget Allocation */}
-          <div className="mb-4 text-left">
-            <label className="block text-gray-700 font-medium mb-1">
-              Budget Allocation
-            </label>
-            <div className="flex justify-center space-x-4">
-              {['Yes', 'No', 'Not yet determined'].map(opt => (
-                <label key={opt} className="inline-flex items-center">
-                  <input
-                    type="radio"
-                    name="budget"
-                    className="form-radio accent-blue-600"
-                    value={opt}
-                    checked={budgetAllocation === opt}
-                    onChange={e => setBudgetAllocation(e.target.value)}
-                  />
-                  <span className="ml-2 text-gray-700">{opt}</span>
-                </label>
-              ))}
-            </div>
-            {budgetAllocation === 'Yes' && (
-              <input
-                type="text"
-                className="block w-full border border-gray-300 rounded-md px-4 py-2 mt-2
-                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Estimated budget range"
-                value={budgetRange}
-                onChange={e => setBudgetRange(e.target.value)}
-              />
-            )}
-          </div>
+{/* 10. Budget Allocation */}
+<div className="mb-4 text-left">
+  <label className="block text-gray-700 font-medium mb-1">
+    Budget Allocation
+  </label>
+  <div className="flex justify-start space-x-4">
+    {['Yes', 'No', 'Not yet determined'].map(opt => (
+      <label key={opt} className="inline-flex items-center">
+        <input
+          type="radio"
+          name="budget"
+          className="form-radio accent-blue-600"
+          value={opt}
+          checked={budgetAllocation === opt}
+          onChange={e => setBudgetAllocation(e.target.value)}
+        />
+        <span className="ml-2 text-gray-700">{opt}</span>
+      </label>
+    ))}
+  </div>
+  {budgetAllocation === 'Yes' && (
+    <input
+      type="text"
+      className="block w-full border border-gray-300 rounded-md px-4 py-2 mt-2
+                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      placeholder="Estimated budget range"
+      value={budgetRange}
+      onChange={e => setBudgetRange(e.target.value)}
+    />
+  )}
+</div>
 
-          {/* 11. RFP Process Required? */}
-          <div className="mb-4 text-left">
-            <label className="block text-gray-700 font-medium mb-1">
-              RFP Process Required?
-            </label>
-            <div className="flex justify-center space-x-4">
-              {['Yes', 'No', 'Not sure'].map(opt => (
-                <label key={opt} className="inline-flex items-center">
-                  <input
-                    type="radio"
-                    name="rfp"
-                    className="form-radio accent-blue-600"
-                    value={opt}
-                    checked={rfpProcess === opt}
-                    onChange={e => setRfpProcess(e.target.value)}
-                  />
-                  <span className="ml-2 text-gray-700">{opt}</span>
-                </label>
-              ))}
-            </div>
-            {rfpProcess === 'Yes' && (
-              <textarea
-                rows={2}
-                className="block w-full border border-gray-300 rounded-md px-4 py-2 mt-2
-                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Describe timeline & vendor process"
-                value={rfpDetails}
-                onChange={e => setRfpDetails(e.target.value)}
-              />
-            )}
-          </div>
 
-          {/* 12. Onsite or Offsite Work Required? */}
-          <div className="mb-4 text-left">
-            <label className="block text-gray-700 font-medium mb-1">
-              Onsite or Offsite Work Required?
-            </label>
-            <div className="flex justify-center space-x-4">
-              {['Onsite (Kuwait)', 'Offsite (Remote)', 'Hybrid'].map(opt => (
-                <label key={opt} className="inline-flex items-center">
-                  <input
-                    type="radio"
-                    name="workLocation"
-                    className="form-radio accent-blue-600"
-                    value={opt}
-                    checked={workLocation === opt}
-                    onChange={e => setWorkLocation(e.target.value)}
-                  />
-                  <span className="ml-2 text-gray-700">{opt}</span>
-                </label>
-              ))}
-            </div>
-          </div>
+{/* 11. RFP Process Required? */}
+<div className="mb-4 text-left">
+  <label className="block text-gray-700 font-medium mb-1">
+    RFP Process Required?
+  </label>
+  <div className="flex justify-start space-x-4">
+    {['Yes', 'No', 'Not sure'].map(opt => (
+      <label key={opt} className="inline-flex items-center">
+        <input
+          type="radio"
+          name="rfp"
+          className="form-radio accent-blue-600"
+          value={opt}
+          checked={rfpProcess === opt}
+          onChange={e => setRfpProcess(e.target.value)}
+        />
+        <span className="ml-2 text-gray-700">{opt}</span>
+      </label>
+    ))}
+  </div>
+  {rfpProcess === 'Yes' && (
+    <textarea
+      rows={2}
+      className="block w-full border border-gray-300 rounded-md px-4 py-2 mt-2
+                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      placeholder="Describe timeline & vendor process"
+      value={rfpDetails}
+      onChange={e => setRfpDetails(e.target.value)}
+    />
+  )}
+</div>
+
+{/* 12. Onsite or Offsite Work Required? */}
+<div className="mb-4 text-left">
+  <label className="block text-gray-700 font-medium mb-1">
+    Onsite or Offsite Work Required?
+  </label>
+  <div className="flex justify-start space-x-4">
+    {['Onsite (Kuwait)', 'Offsite (Remote)', 'Hybrid'].map(opt => (
+      <label key={opt} className="inline-flex items-center">
+        <input
+          type="radio"
+          name="workLocation"
+          className="form-radio accent-blue-600"
+          value={opt}
+          checked={workLocation === opt}
+          onChange={e => setWorkLocation(e.target.value)}
+        />
+        <span className="ml-2 text-gray-700">{opt}</span>
+      </label>
+    ))}
+  </div>
+</div>
+
 
           {/* 13. Legacy/On-Prem Systems Requiring Integration */}
           <div className="mb-4 text-left">
