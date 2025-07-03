@@ -131,7 +131,7 @@ export default function SurveyForm() {
           {/* 1. Customer Name */}
           <div className="mb-4 text-left">
             <label className="block text-gray-700 font-medium mb-1">
-              Customer Name
+              1. Customer Name
             </label>
             <input
               type="text"
@@ -145,7 +145,7 @@ export default function SurveyForm() {
           {/* 2. Scope of the Project */}
           <div className="mb-4 text-left">
             <label className="block text-gray-700 font-medium mb-1">
-              Scope of the Project
+              2. Scope of the Project
             </label>
             <textarea
               rows={3}
@@ -160,7 +160,7 @@ export default function SurveyForm() {
           {/* 3. Detailed Requirement */}
           <div className="mb-4 text-left">
             <label className="block text-gray-700 font-medium mb-1">
-              Detailed Requirement
+              3. Detailed Requirement
             </label>
             <textarea
               rows={3}
@@ -175,7 +175,7 @@ export default function SurveyForm() {
           {/* 4. Primary Goals for Moving to Azure */}
           <div className="mb-4 text-left">
             <label className="block text-gray-700 font-medium mb-1">
-              Primary Goals for Moving to Azure
+              4. Primary Goals for Moving to Azure
             </label>
             <div className="grid grid-cols-2 gap-2">
               {[
@@ -215,7 +215,7 @@ export default function SurveyForm() {
           {/* 5. Compliance Standards to Meet */}
           <div className="mb-4 text-left">
             <label className="block text-gray-700 font-medium mb-1">
-              Compliance Standards to Meet
+              5. Compliance Standards to Meet
             </label>
             <div className="grid grid-cols-2 gap-2">
               {[
@@ -253,7 +253,7 @@ export default function SurveyForm() {
           {/* 6. Business Point of Contact */}
           <div className="mb-4 text-left">
             <label className="block text-gray-700 font-medium mb-1">
-              Business Point of Contact (Name, Role, Email, Phone)
+              6. Business Point of Contact (Name, Role, Email, Phone)
             </label>
             <textarea
               rows={2}
@@ -268,7 +268,7 @@ export default function SurveyForm() {
           {/* 7. Technical Point of Contact */}
           <div className="mb-4 text-left">
             <label className="block text-gray-700 font-medium mb-1">
-              Technical Point of Contact (Name, Role, Email, Phone)
+              7. Technical Point of Contact (Name, Role, Email, Phone)
             </label>
             <textarea
               rows={2}
@@ -283,7 +283,7 @@ export default function SurveyForm() {
           {/* 8. Anticipated Project Start and End Dates */}
           <div className="mb-4 text-left">
             <label className="block text-gray-700 font-medium mb-1">
-              Anticipated Project Start and End Dates
+             8. Anticipated Project Start and End Dates
             </label>
             <input
               type="date"
@@ -304,7 +304,7 @@ export default function SurveyForm() {
          {/* 9. Critical Project Milestones */}
           <div className="mb-4 text-left">
             <label className="block text-gray-700 font-medium mb-1">
-              Critical Project Milestones
+              9. Critical Project Milestones
             </label>
             <textarea
               rows={2}
@@ -319,7 +319,7 @@ export default function SurveyForm() {
 {/* 10. Budget Allocation */}
 <div className="mb-4 text-left">
   <label className="block text-gray-700 font-medium mb-1">
-    Budget Allocation
+    10. Budget Allocation
   </label>
   <div className="flex justify-start space-x-4">
     {['Yes', 'No', 'Not yet determined'].map(opt => (
@@ -352,7 +352,7 @@ export default function SurveyForm() {
 {/* 11. RFP Process Required? */}
 <div className="mb-4 text-left">
   <label className="block text-gray-700 font-medium mb-1">
-    RFP Process Required?
+    11. RFP Process Required?
   </label>
   <div className="flex justify-start space-x-4">
     {['Yes', 'No', 'Not sure'].map(opt => (
@@ -384,7 +384,7 @@ export default function SurveyForm() {
 {/* 12. Onsite or Offsite Work Required? */}
 <div className="mb-4 text-left">
   <label className="block text-gray-700 font-medium mb-1">
-    Onsite or Offsite Work Required?
+    12. Onsite or Offsite Work Required?
   </label>
   <div className="flex justify-start space-x-4">
     {['Onsite (Kuwait)', 'Offsite (Remote)', 'Hybrid'].map(opt => (
@@ -407,7 +407,7 @@ export default function SurveyForm() {
           {/* 13. Legacy/On-Prem Systems Requiring Integration */}
           <div className="mb-4 text-left">
             <label className="block text-gray-700 font-medium mb-1">
-              Legacy/On-Prem Systems Requiring Integration
+              13. Legacy/On-Prem Systems Requiring Integration
             </label>
             <textarea
               rows={2}
@@ -422,7 +422,7 @@ export default function SurveyForm() {
           {/* 14. Azure Services Already in Use (if any) */}
           <div className="mb-4 text-left">
             <label className="block text-gray-700 font-medium mb-1">
-              Azure Services Already in Use (if any)
+              14. Azure Services Already in Use (if any)
             </label>
             <div className="grid grid-cols-2 gap-2">
               {[
@@ -459,7 +459,7 @@ export default function SurveyForm() {
           {/* 15. Date of Submission */}
           <div className="mb-4 text-left">
             <label className="block text-gray-700 font-medium mb-1">
-              Date of Submission
+              15. Date of Submission
             </label>
             <input
               type="date"
