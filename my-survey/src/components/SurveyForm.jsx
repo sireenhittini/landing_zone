@@ -32,6 +32,9 @@ const [otherAzureService, setOtherAzureService] = useState('');
   const [azureServices, setAzureServices] = useState([]);
   const [otherAzure, setOtherAzure] = useState('');
   const [submissionDate, setSubmissionDate] = useState('');
+  // enforce dates ≥ today
+const today = new Date().toISOString().split('T')[0];
+
   // NEW: submission state for disabling button
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -275,6 +278,7 @@ const [otherAzureService, setOtherAzureService] = useState('');
   <div className="relative">
     <input
       type="date"
+      min={today}
       value={startDate}
       onChange={e => setStartDate(e.target.value)}
       className="w-full pl-28 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -288,6 +292,7 @@ const [otherAzureService, setOtherAzureService] = useState('');
   <div className="relative mt-2">
     <input
       type="date"
+      min={startDate}
       value={endDate}
       onChange={e => setEndDate(e.target.value)}
       className="w-full pl-28 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -297,6 +302,7 @@ const [otherAzureService, setOtherAzureService] = useState('');
     </span>
   </div>
 </div>
+
 
 
 
