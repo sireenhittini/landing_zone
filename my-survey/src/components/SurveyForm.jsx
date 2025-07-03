@@ -12,9 +12,9 @@ export default function SurveyForm() {
   const [customerName, setCustomerName] = useState('');
   const [projectScope, setProjectScope] = useState('');
   const [detailedRequirement, setDetailedRequirement] = useState('');
-  const [primaryGoals, setPrimaryGoals] = useState([]);
+  const [primaryGoal, setPrimaryGoal] = useState('');
   const [otherPrimary, setOtherPrimary] = useState('');
-  const [complianceStandards, setComplianceStandards] = useState([]);
+  const [complianceStandard, setComplianceStandard] = useState('');
   const [otherCompliance, setOtherCompliance] = useState('');
   const [businessPOC, setBusinessPOC] = useState('');
   const [technicalPOC, setTechnicalPOC] = useState('');
@@ -172,83 +172,67 @@ export default function SurveyForm() {
             />
           </div>
 
-          {/* 4. Primary Goals for Moving to Azure */}
-          <div className="mb-4 text-left">
-            <label className="block text-gray-700 font-medium mb-1">
-              4. Primary Goals for Moving to Azure
-            </label>
-            <div className="grid grid-cols-2 gap-2">
-              {[
-                'Cost Optimization',
-                'Regulatory Compliance',
-                'Modernize Legacy Systems',
-                'Disaster Recovery',
-                'Scalability & Performance',
-                'Cybersecurity',
-                'Other'
-              ].map(goal => (
-                <label key={goal} className="inline-flex items-center">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox accent-blue-600"
-                    checked={primaryGoals.includes(goal)}
-                    onChange={() =>
-                      toggle(primaryGoals, setPrimaryGoals, goal)
-                    }
-                  />
-                  <span className="ml-2 text-gray-700">{goal}</span>
-                </label>
-              ))}
-            </div>
-            {primaryGoals.includes('Other') && (
-              <input
-                type="text"
-                className="block w-full border border-gray-300 rounded-md px-4 py-2 mt-2
-                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Please specify"
-                value={otherPrimary}
-                onChange={e => setOtherPrimary(e.target.value)}
-              />
-            )}
-          </div>
+<div className="mb-4 text-left">
+  <label className="block text-gray-700 font-medium mb-1">
+    4. Primary Goals for Moving to Azure
+  </label>
+<select
+  value={primaryGoal}
+  onChange={e => setPrimaryGoal(e.target.value)}
+  className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  required
+>
+  <option value="" disabled>
+    — Select a primary goal —
+  </option>
+  <option value="Cost Optimization">Cost Optimization</option>
+  <option value="Regulatory Compliance">Regulatory Compliance</option>
+  <option value="Modernize Legacy Systems">Modernize Legacy Systems</option>
+  <option value="Disaster Recovery">Disaster Recovery</option>
+  <option value="Scalability & Performance">Scalability & Performance</option>
+  <option value="Cybersecurity">Cybersecurity</option>
+  <option value="Other">Other</option>
+</select>
 
-          {/* 5. Compliance Standards to Meet */}
-          <div className="mb-4 text-left">
-            <label className="block text-gray-700 font-medium mb-1">
-              5. Compliance Standards to Meet
-            </label>
-            <div className="grid grid-cols-2 gap-2">
-              {[
-                'Kuwait Cybersecurity Law',
-                'ISO 27001',
-                'PCI DSS',
-                'GDPR',
-                'Other'
-              ].map(std => (
-                <label key={std} className="inline-flex items-center">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox accent-blue-600"
-                    checked={complianceStandards.includes(std)}
-                    onChange={() =>
-                      toggle(complianceStandards, setComplianceStandards, std)
-                    }
-                  />
-                  <span className="ml-2 text-gray-700">{std}</span>
-                </label>
-              ))}
-            </div>
-            {complianceStandards.includes('Other') && (
-              <input
-                type="text"
-                className="block w-full border border-gray-300 rounded-md px-4 py-2 mt-2
-                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Please specify"
-                value={otherCompliance}
-                onChange={e => setOtherCompliance(e.target.value)}
-              />
-            )}
-          </div>
+{primaryGoal === 'Other' && (
+  <input
+    type="text"
+    className="w-full border border-gray-300 rounded-md px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    placeholder="Please specify"
+    value={otherPrimary}
+    onChange={e => setOtherPrimary(e.target.value)}
+  />
+)}
+
+</div>
+<div className="mb-4 text-left">
+  <label className="block text-gray-700 font-medium mb-1">
+    5. Compliance Standards to Meet
+  </label>
+  <select
+    value={complianceStandard}
+    onChange={e => setComplianceStandard(e.target.value)}
+    className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    required
+  >
+    <option value="" disabled>— Select a standard —</option>
+    <option value="Kuwait Cybersecurity Law">Kuwait Cybersecurity Law</option>
+    <option value="ISO 27001">ISO 27001</option>
+    <option value="PCI DSS">PCI DSS</option>
+    <option value="GDPR">GDPR</option>
+    <option value="Other">Other</option>
+  </select>
+
+  {complianceStandard === 'Other' && (
+    <input
+      type="text"
+      className="w-full border border-gray-300 rounded-md px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      placeholder="Please specify"
+      value={otherCompliance}
+      onChange={e => setOtherCompliance(e.target.value)}
+    />
+  )}
+</div>
 
           {/* 6. Business Point of Contact */}
           <div className="mb-4 text-left">
