@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { formatEmailBody } from './EmailFormatter';
 
+
 // read in your env values
 const FUNCTION_URL = import.meta.env.VITE_EMAIL_FUNCTION_URL;
 const EMAIL_TO     = import.meta.env.VITE_EMAIL_TO || 'siren.hittini@zaintech.com';
@@ -102,7 +103,7 @@ export default function SurveyForm() {
       USER_EMAIL
     );
 
-    const subjectLine = `Azure Landing Zone Discovery Form from: ${USER_EMAIL}`;
+    const subjectLine = `Azure Landing Zone Discovery Survey from: ${USER_EMAIL}`;
 
     const payload = {
       name:        EMAIL_TO,
