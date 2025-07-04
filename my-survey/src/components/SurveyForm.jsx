@@ -1,45 +1,46 @@
-// src/components/SurveyForm.jsx
 import React, { useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { formatEmailBody } from './EmailFormatter';
- 
+
 // read in your env values
 const FUNCTION_URL = import.meta.env.VITE_EMAIL_FUNCTION_URL;
-const EMAIL_TO = import.meta.env.VITE_EMAIL_TO || 'siren.hittini@zaintech.com';
-  const USER_EMAIL = 'siren.hittini@zaintech.com'; // TODO: Get from Microsoft login
-  const USER_NAME = 'Sireen Hittini'; // TODO: Get from Microsoft login
- 
+const EMAIL_TO     = import.meta.env.VITE_EMAIL_TO || 'siren.hittini@zaintech.com';
+
+// TODO: replace these with real auth values once you have Microsoft login
+const USER_EMAIL = 'siren.hittini@zaintech.com';
+const USER_NAME  = 'Sireen Hittini';
+
 export default function SurveyForm() {
   // State for each of the 15 fields
-  const [customerName, setCustomerName] = useState('');
-  const [projectScope, setProjectScope] = useState('');
+  const [customerName,    setCustomerName]    = useState('');
+  const [projectScope,    setProjectScope]    = useState('');
   const [detailedRequirement, setDetailedRequirement] = useState('');
-  const [primaryGoal, setPrimaryGoal] = useState('');
-  const [otherPrimary, setOtherPrimary] = useState('');
+  const [primaryGoal,     setPrimaryGoal]     = useState('');
+  const [otherPrimary,    setOtherPrimary]    = useState('');
   const [complianceStandard, setComplianceStandard] = useState('');
   const [otherCompliance, setOtherCompliance] = useState('');
-  const [businessPOC, setBusinessPOC] = useState('');
-  const [technicalPOC, setTechnicalPOC] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [milestones, setMilestones] = useState('');
+  const [businessPOC,     setBusinessPOC]     = useState('');
+  const [technicalPOC,    setTechnicalPOC]    = useState('');
+  const [startDate,       setStartDate]       = useState('');
+  const [endDate,         setEndDate]         = useState('');
+  const [milestones,      setMilestones]      = useState('');
   const [budgetAllocation, setBudgetAllocation] = useState('');
-  const [budgetRange, setBudgetRange] = useState('');
-  const [rfpProcess, setRfpProcess] = useState('');
-  const [rfpDetails, setRfpDetails] = useState('');
-  const [workLocation, setWorkLocation] = useState('');
+  const [budgetRange,     setBudgetRange]     = useState('');
+  const [rfpProcess,      setRfpProcess]      = useState('');
+  const [rfpDetails,      setRfpDetails]      = useState('');
+  const [workLocation,    setWorkLocation]    = useState('');
   const [legacyIntegration, setLegacyIntegration] = useState('');
-  const [azureService, setAzureService] = useState('');
+  const [azureService,    setAzureService]    = useState('');
   const [otherAzureService, setOtherAzureService] = useState('');
-  const [submissionDate, setSubmissionDate] = useState('');
- 
+  const [submissionDate,  setSubmissionDate]  = useState('');
+
   // enforce dates ≥ today
   const today = new Date().toISOString().split('T')[0];
- 
+
   // submission state for disabling button
   const [submitting, setSubmitting] = useState(false);
-  const [errors, setErrors] = useState({});
- 
+  const [errors,     setErrors]     = useState({});
+
   const validate = () => {
     const newErrors = {};
     const requiredFields = {
@@ -53,67 +54,70 @@ export default function SurveyForm() {
       milestones,
       submissionDate
     };
-   
-    Object.entries(requiredFields).forEach(([fieldName, value]) => {
-      if (!value || value.trim() === '') {
-        newErrors[fieldName] = true;
+    Object.entries(requiredFields).forEach(([field, val]) => {
+      if (!val || val.trim() === '') {
+        newErrors[field] = true;
       }
     });
-   
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
- 
+
   const handleSubmit = async e => {
     e.preventDefault();
     if (!validate()) {
       toast.error('Please fill in all required fields.');
       return;
     }
- 
+
     setSubmitting(true);
     toast.success('Sending your responses…');
- 
-    // build email body
-    const emailBody = formatEmailBody({
-      customerName,
-      projectScope,
-      detailedRequirement,
-      primaryGoal,
-      otherPrimary,
-      complianceStandard,
-      otherCompliance,
-      businessPOC,
-      technicalPOC,
-      startDate,
-      endDate,
-      milestones,
-      budgetAllocation,
-      budgetRange,
-      rfpProcess,
-      rfpDetails,
-      workLocation,
-      legacyIntegration,
-      azureService,
-      otherAzureService,
-      submissionDate
-    }, EMAIL_TO);
-    
- const subjectLine = `Azure Landing Zone Discovery Form from: ${USER_EMAIL}`;
+
+    // build email body using the new signature-friendly formatter
+    const emailBody = formatEmailBody(
+      {
+        customerName,
+        projectScope,
+        detailedRequirement,
+        primaryGoal,
+        otherPrimary,
+        complianceStandard,
+        otherCompliance,
+        businessPOC,
+        technicalPOC,
+        startDate,
+        endDate,
+        milestones,
+        budgetAllocation,
+        budgetRange,
+        rfpProcess,
+        rfpDetails,
+        workLocation,
+        legacyIntegration,
+        azureService,
+        otherAzureService,
+        submissionDate
+      },
+      USER_NAME,
+      USER_EMAIL
+    );
+
+    const subjectLine = `Azure Landing Zone Discovery Form from: ${USER_EMAIL}`;
+
     const payload = {
-      name: EMAIL_TO,
-      email: EMAIL_TO,
+      name:        EMAIL_TO,
+      email:       EMAIL_TO,
       subject:     subjectLine,
-      toEmail: EMAIL_TO,
+      toEmail:     EMAIL_TO,
       companyName: 'ZainTECH',
-      message: emailBody
+      message:     emailBody
     };
- 
+
     try {
       const res = await fetch(FUNCTION_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body:    JSON.stringify(payload)
       });
       if (!res.ok) throw new Error(await res.text() || res.statusText);
       toast.success('Email sent successfully!');
@@ -125,6 +129,7 @@ export default function SurveyForm() {
       setTimeout(() => setSubmitting(false), 2000);
     }
   };
+
  
   return (
     <div className="w-screen min-h-screen bg-gray-100 flex items-center justify-center p-6">
