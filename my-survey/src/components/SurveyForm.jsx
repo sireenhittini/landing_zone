@@ -6,6 +6,8 @@ import { formatEmailBody } from './EmailFormatter';
 // read in your env values
 const FUNCTION_URL = import.meta.env.VITE_EMAIL_FUNCTION_URL;
 const EMAIL_TO = import.meta.env.VITE_EMAIL_TO || 'siren.hittini@zaintech.com';
+  const USER_EMAIL = 'siren.hittini@zaintech.com'; // TODO: Get from Microsoft login
+  const USER_NAME = 'Sireen Hittini'; // TODO: Get from Microsoft login
  
 export default function SurveyForm() {
   // State for each of the 15 fields
@@ -96,10 +98,12 @@ export default function SurveyForm() {
       otherAzureService,
       submissionDate
     }, EMAIL_TO);
- 
+    
+ const subjectLine = `Azure Landing Zone Discovery Form from: ${USER_EMAIL}`;
     const payload = {
       name: EMAIL_TO,
       email: EMAIL_TO,
+      subject:     subjectLine,
       toEmail: EMAIL_TO,
       companyName: 'ZainTECH',
       message: emailBody

@@ -12,14 +12,11 @@ export function formatEmailBody(form, submitter) {
  
   // build the final plain‐text body
   return [
-    'SQL Server Migration Assessment Submission',
-    `Submitted by: ${submitter}`,
-    `Date: ${now}`,
     '--------------------------------------------------',
     ...rows,
     '',
     'Regards,',
-    'Infra Data Automation Bot'
+    'Landing Zone Discovery Survey Bot'
   ].join('\n');
 }
  
