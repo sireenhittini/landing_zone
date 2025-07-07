@@ -1,4 +1,4 @@
-export function formatEmailBody(formValues, submitterName, submitterEmail) {
+export function formatEmailBody(formValues) {
   const titleLine = 'Azure Landing Zone Discovery Form Details';
   const questionMap = [
     ['customerName',       '1. Customer Name'],
@@ -37,6 +37,6 @@ export function formatEmailBody(formValues, submitterName, submitterEmail) {
     '==================================================',
     '',
     'Best regards,',
-    'Azure Landing Zone Discovery team'
+    'Azure Landing Zone Discovery '
   ].join('\n');
 }
