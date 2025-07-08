@@ -3,7 +3,7 @@ import { Toaster, toast } from 'react-hot-toast';
 import { formatEmailBody } from './EmailFormatter';
 
 export default function SurveyForm({ user, functionUrl }) {
-  // Form field state
+  // Individual form fields
   const [customerName, setCustomerName] = useState('');
   const [projectScope, setProjectScope] = useState('');
   const [detailedRequirement, setDetailedRequirement] = useState('');
@@ -26,16 +26,17 @@ export default function SurveyForm({ user, functionUrl }) {
   const [otherAzureService, setOtherAzureService] = useState('');
   const [submissionDate, setSubmissionDate] = useState('');
 
-  // Validation state
+  // Validation & submission status
   const [_errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
-  // Enforce dates ≥ today
+  // Ensure dates are not before today
   const today = new Date().toISOString().split('T')[0];
 
+  // Validate required fields
   function validate() {
     const newErrors = {};
-    const requiredFields = {
+    const required = {
       customerName,
       projectScope,
       detailedRequirement,
@@ -46,8 +47,8 @@ export default function SurveyForm({ user, functionUrl }) {
       milestones,
       submissionDate
     };
-    Object.entries(requiredFields).forEach(([field, val]) => {
-      if (!val || !val.trim()) {
+    Object.entries(required).forEach(([field, value]) => {
+      if (!value.trim()) {
         newErrors[field] = true;
       }
     });
@@ -61,6 +62,7 @@ export default function SurveyForm({ user, functionUrl }) {
     return Object.keys(newErrors).length === 0;
   }
 
+  // Prepare and send form data
   async function handleSubmit(e) {
     e.preventDefault();
     if (!validate()) {
@@ -70,41 +72,37 @@ export default function SurveyForm({ user, functionUrl }) {
     setSubmitting(true);
     toast.success('Sending your responses…');
 
-    const emailBody = formatEmailBody(
-      {
-        customerName,
-        projectScope,
-        detailedRequirement,
-        primaryGoal,
-        otherPrimary,
-        complianceStandard,
-        otherCompliance,
-        businessPOC,
-        technicalPOC,
-        startDate,
-        endDate,
-        milestones,
-        budgetAllocation,
-        budgetRange,
-        rfpProcess,
-        rfpDetails,
-        workLocation,
-        legacyIntegration,
-        azureService,
-        otherAzureService,
-        submissionDate
-      },
-      user.name,
-      user.username
-    );
+    const formValues = {
+      customerName,
+      projectScope,
+      detailedRequirement,
+      primaryGoal,
+      otherPrimary,
+      complianceStandard,
+      otherCompliance,
+      businessPOC,
+      technicalPOC,
+      startDate,
+      endDate,
+      milestones,
+      budgetAllocation,
+      budgetRange,
+      rfpProcess,
+      rfpDetails,
+      workLocation,
+      legacyIntegration,
+      azureService,
+      otherAzureService,
+      submissionDate
+    };
+    const emailBody = formatEmailBody(formValues);
 
     const payload = {
-      name:        user.name,
-      email:       user.username,
-      toEmail:     import.meta.env.VITE_EMAIL_TO || '',
-      companyName: 'ZainTECH',
-      subject:     `Azure Landing Zone Discovery Survey from: ${user.username}`,
-      message:     emailBody
+      name:    user.name,
+      email:   user.username,
+      toEmail: import.meta.env.VITE_EMAIL_TO || '',
+      subject: `Azure Landing Zone Discovery Survey from: ${user.username}`,
+      message: emailBody
     };
 
     try {
@@ -122,11 +120,15 @@ export default function SurveyForm({ user, functionUrl }) {
       setSubmitting(false);
     }
   }
- 
-  return (
-    <div className="w-screen min-h-screen bg-gray-100 flex items-center justify-center p-6">
-      <Toaster position="top-center" />
-      <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-2xl p-8 max-w-xl w-full">
+
+
+return (
+  <div className="w-screen min-h-screen bg-gray-100 flex items-center justify-center p-6">
+    <Toaster position="top-center" />
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white shadow-lg rounded-2xl p-8 max-w-xl w-full"
+    >
       {/* Logo */}
       <div className="flex justify-center mb-6">
         <img
@@ -135,11 +137,11 @@ export default function SurveyForm({ user, functionUrl }) {
           className="h-16 drop-shadow-lg"
         />
       </div>
- 
-{/* Title */}
-<h2 className="text-3xl font-extrabold text-center text-gray-900 mb-8 whitespace-nowrap">
-  Azure Landing Zone Discovery Form
-</h2>
+
+      {/* Title */}
+      <h2 className="text-3xl font-extrabold text-center text-gray-900 mb-8 whitespace-nowrap">
+        Azure Landing Zone Discovery Form
+      </h2>
 
 
       <div className="space-y-8">
