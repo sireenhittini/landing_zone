@@ -187,39 +187,40 @@ export default function SurveyForm({ user, functionUrl }) {
           />
         </div>
  
-        {/* 4. Primary Goals for Moving to Azure */}
-        <div className="mb-10 text-left">
-          <label className="block text-gray-700 font-medium mb-4">
-            4. Primary Goals for Moving to Azure
-          </label>
-          <select
-            value={primaryGoal}
-            onChange={e => setPrimaryGoal(e.target.value)}
-            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          >
-            <option value="" disabled>
-              — Select a primary goal —
-            </option>
-            <option value="Cost Optimization">Cost Optimization</option>
-            <option value="Regulatory Compliance">Regulatory Compliance</option>
-            <option value="Modernize Legacy Systems">Modernize Legacy Systems</option>
-            <option value="Disaster Recovery">Disaster Recovery</option>
-            <option value="Scalability & Performance">Scalability & Performance</option>
-            <option value="Cybersecurity">Cybersecurity</option>
-            <option value="Other">Other</option>
-          </select>
- 
-          {primaryGoal === 'Other' && (
-            <input
-              type="text"
-              className="w-full border border-gray-300 rounded-md px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Please specify"
-              value={otherPrimary}
-              onChange={e => setOtherPrimary(e.target.value)}
-            />
-          )}
-        </div>
+
+{/* 4. Primary Goals for Moving to Azure */}
+<div className="mb-10 text-left">
+  <label className="block text-gray-700 font-medium">
+    4. Primary Goals for Moving to Azure
+  </label>
+  <select
+    value={primaryGoal}
+    onChange={e => setPrimaryGoal(e.target.value)}
+    className="w-full border border-gray-300 rounded px-4 py-2 mt-1"
+    required
+  >
+    <option value="">-- Select --</option>
+    <option value="Cost Optimization">Cost Optimization</option>
+    <option value="Regulatory Compliance">Regulatory Compliance</option>
+    <option value="Modernize Legacy Systems">Modernize Legacy Systems</option>
+    <option value="Disaster Recovery">Disaster Recovery</option>
+    <option value="Scalability & Performance">Scalability & Performance</option>
+    <option value="Cybersecurity">Cybersecurity</option>
+    <option value="Other">Other</option>
+  </select>
+
+  {primaryGoal === 'Other' && (
+    <input
+      type="text"
+      className="w-full border border-gray-300 rounded px-4 py-2 mt-1"
+      placeholder="Please specify"
+      value={otherPrimary}
+      onChange={e => setOtherPrimary(e.target.value)}
+    />
+  )}
+</div>
+
+
  
         {/* 5. Compliance Standards to Meet */}
         <div className="mb-10 text-left">
