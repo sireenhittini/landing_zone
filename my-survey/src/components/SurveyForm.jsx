@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Toaster, toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
+import { showSuccess, showError, showWarning } from '../utils/toastNotifications';
+
 import { formatEmailBody } from './EmailFormatter';
 
 
@@ -43,43 +45,47 @@ export default function AzureForm({ user, functionUrl }) {
 
   const today = new Date().toISOString().split('T')[0];
 
-  function validate() {
-    const newErrors = {};
-    const required = {
-      customerName: formData.customerName,
-      projectScope: formData.projectScope,
-      detailedRequirement: formData.detailedRequirement,
-      businessPOC: formData.businessPOC,
-      technicalPOC: formData.technicalPOC,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
-      milestones: formData.milestones,
-      submissionDate: formData.submissionDate
-    };
-    Object.entries(required).forEach(([field, value]) => {
-      if (!value.trim()) {
-        newErrors[field] = true;
-      }
-    });
-    if (formData.primaryGoal === 'Other' && !formData.otherPrimary.trim()) {
-      newErrors.otherPrimary = true;
+function validate() {
+  const newErrors = {};
+  const required = {
+    customerName: formData.customerName,
+    projectScope: formData.projectScope,
+    detailedRequirement: formData.detailedRequirement,
+    businessPOC: formData.businessPOC,
+    technicalPOC: formData.technicalPOC,
+    startDate: formData.startDate,
+    endDate: formData.endDate,
+    milestones: formData.milestones,
+    submissionDate: formData.submissionDate,
+    legacyIntegration: formData.legacyIntegration  // <-- Add this line
+  };
+
+  Object.entries(required).forEach(([field, value]) => {
+    if (!value.trim()) {
+      newErrors[field] = true;
     }
-    if (formData.complianceStandard === 'Other' && !formData.otherCompliance.trim()) {
-      newErrors.otherCompliance = true;
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  });
+
+  if (formData.primaryGoal === 'Other' && !formData.otherPrimary.trim()) {
+    newErrors.otherPrimary = true;
   }
+  if (formData.complianceStandard === 'Other' && !formData.otherCompliance.trim()) {
+    newErrors.otherCompliance = true;
+  }
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+}
+
 
 
   async function handleSubmit(e) {
     e.preventDefault();
     if (!validate()) {
-      toast.error('Please fill in all required fields.');
+      showWarning('Please fill in all required fields.');
       return;
     }
     setSubmitting(true);
-    toast.success('Sending your responses…');
+    showSuccess('Sending your responses…');
 
     const emailBody = formatEmailBody(formData);
 
@@ -98,10 +104,10 @@ export default function AzureForm({ user, functionUrl }) {
         body: JSON.stringify(payload)
       });
       if (!res.ok) throw new Error(await res.text() || res.statusText);
-      toast.success('Email sent successfully!');
+      showSuccess('Email sent successfully!');
     } catch (err) {
       console.error(err);
-      toast.error(`Failed to send email: ${err.message}`);
+      showError(`Failed to send email: ${err.message}`);
     } finally {
       setSubmitting(false);
     }
