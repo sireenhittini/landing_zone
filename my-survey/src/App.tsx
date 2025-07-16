@@ -1,46 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import { PublicClientApplication } from '@azure/msal-browser';
-import SurveyForm from './components/SurveyForm';
+import { PublicClientApplication, AccountInfo } from '@azure/msal-browser';
+import SurveyForm from './components/AzureForm';
 import './App.css';
 import { isDevelopment } from './utils/environment';
+
+interface User {
+  username: string;
+  name: string;
+}
 
 // MSAL configuration
 const msalConfig = {
   auth: {
-    clientId:   import.meta.env.VITE_MSAL_CLIENTID,
-    authority:  import.meta.env.VITE_MSAL_AUTHORITY_URL,
+    clientId: import.meta.env.VITE_MSAL_CLIENTID as string,
+    authority: import.meta.env.VITE_MSAL_AUTHORITY_URL as string,
     redirectUri: window.location.origin,
   },
 };
 
 const msalInstance = new PublicClientApplication(msalConfig);
 const loginRequest = { scopes: ['User.Read'] };
-const FUNCTION_URL = import.meta.env.VITE_EMAIL_FUNCTION_URL;
+const FUNCTION_URL = import.meta.env.VITE_EMAIL_FUNCTION_URL as string;
 
 export default function App() {
-  const [user, setUser] = useState(
+  const [user, setUser] = useState<User | null>(
     isDevelopment()
       ? {
           username: import.meta.env.VITE_DEV_USER_EMAIL || 'dev@contoso.com',
-          name:     import.meta.env.VITE_DEV_USER_NAME  || 'Dev User',
+          name: import.meta.env.VITE_DEV_USER_NAME || 'Dev User',
         }
       : null
   );
 
   useEffect(() => {
-    // If we're in development, skip authentication
     if (isDevelopment()) return;
-    // If user is already set, no need to init again
     if (user) return;
 
-    const initAuth = async () => {
+    const initAuth = async (): Promise<void> => {
       try {
-        await msalInstance.initialize();
+        // Note: msalInstance.initialize() does not exist in msal-browser, you can remove it if it's a mistake
+        // await msalInstance.initialize();
+
         const resp = await msalInstance.handleRedirectPromise();
-        const account = resp?.account || msalInstance.getAllAccounts()[0];
+        const account: AccountInfo | undefined = resp?.account || msalInstance.getAllAccounts()[0];
 
         if (account) {
-          setUser({ username: account.username, name: account.name });
+          setUser({
+            username: account.username,
+            name: account.name ?? 'Unknown Name',
+          });
         } else {
           await msalInstance.loginRedirect(loginRequest);
         }

@@ -3,10 +3,40 @@ import { Toaster } from 'react-hot-toast';
 import { showSuccess, showError, showWarning } from '../utils/toastNotifications';
 
 import { formatEmailBody } from './EmailFormatter';
+type AzureFormProps = {
+  user: {
+    name: string;
+    username: string;
+  };
+  functionUrl: string;
+};
 
+export type AzureFormData = {
+  customerName: string;
+  projectScope: string;
+  detailedRequirement: string;
+  primaryGoal: string;
+  otherPrimary: string;
+  complianceStandard: string;
+  otherCompliance: string;
+  businessPOC: string;
+  technicalPOC: string;
+  startDate: string;
+  endDate: string;
+  milestones: string;
+  budgetAllocation: string;
+  budgetRange: string;
+  rfpProcess: string;
+  rfpDetails: string;
+  workLocation: string;
+  legacyIntegration: string;
+  azureService: string;
+  otherAzureService: string;
+  submissionDate: string;
+};
+export default function AzureForm({ user, functionUrl }: AzureFormProps) {
 
-export default function AzureForm({ user, functionUrl }) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<AzureFormData>({
 
     customerName: '',
     projectScope: '',
@@ -30,23 +60,24 @@ export default function AzureForm({ user, functionUrl }) {
     otherAzureService: '',
     submissionDate: ''
   });
-  function handleChange(e) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
   const { name, value } = e.target;
   setFormData(prev => ({
     ...prev,
     [name]: value
   }));
 }
+type FormErrors = {
+  [key in keyof AzureFormData]?: boolean;
+};
+const [errors, setErrors] = useState<FormErrors>({});
 
-  
-
-  const [_errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
   const today = new Date().toISOString().split('T')[0];
 
 function validate() {
-  const newErrors = {};
+  const newErrors: FormErrors = {};
   const required = {
     customerName: formData.customerName,
     projectScope: formData.projectScope,

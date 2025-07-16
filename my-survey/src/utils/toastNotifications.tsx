@@ -1,7 +1,6 @@
-// my-survey/src/utils/toastNotifications.js
 import { toast } from 'react-hot-toast';
 
-export const showSuccess = (message) => {
+export const showSuccess = (message: string): void => {
   toast.success(message, {
     style: {
       background: '#D1FAE5',
@@ -15,7 +14,7 @@ export const showSuccess = (message) => {
   });
 };
 
-export const showError = (message) => {
+export const showError = (message: string): void => {
   toast.error(message, {
     style: {
       background: '#FEE2E2',
@@ -29,7 +28,7 @@ export const showError = (message) => {
   });
 };
 
-export const showWarning = (message) => {
+export const showWarning = (message: string): void => {
   toast(message, {
     icon: '⚠️',
     style: {

@@ -1,6 +1,8 @@
-export function formatEmailBody(formValues) {
+import type { AzureFormData } from './AzureForm';
+export function formatEmailBody(formValues: AzureFormData): string {
+
   const titleLine = 'Azure Landing Zone Discovery Form Details';
-  const questionMap = [
+  const questionMap: [keyof AzureFormData, string][] = [
     ['customerName',       '1. Customer Name'],
     ['projectScope',       '2. Project Scope'],
     ['detailedRequirement','3. Detailed Requirement'],
