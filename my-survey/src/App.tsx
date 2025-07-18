@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, JSX } from 'react';
 import { PublicClientApplication, AccountInfo } from '@azure/msal-browser';
 import SurveyForm from './components/AzureForm';
 import './App.css';
 import { isDevelopment } from './utils/environment';
+import { Toaster } from 'react-hot-toast';
 
 interface User {
   username: string;
@@ -22,7 +23,7 @@ const msalInstance = new PublicClientApplication(msalConfig);
 const loginRequest = { scopes: ['User.Read'] };
 const FUNCTION_URL = import.meta.env.VITE_EMAIL_FUNCTION_URL as string;
 
-export default function App() {
+export default function App(): JSX.Element {
   const [user, setUser] = useState<User | null>(
     isDevelopment()
       ? {
@@ -38,9 +39,6 @@ export default function App() {
 
     const initAuth = async (): Promise<void> => {
       try {
-        // Note: msalInstance.initialize() does not exist in msal-browser, you can remove it if it's a mistake
-        // await msalInstance.initialize();
-
         const resp = await msalInstance.handleRedirectPromise();
         const account: AccountInfo | undefined = resp?.account || msalInstance.getAllAccounts()[0];
 
@@ -69,8 +67,11 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <SurveyForm user={user} functionUrl={FUNCTION_URL} />
-    </div>
+    <>
+      <Toaster position="top-center" />
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        <SurveyForm user={user} functionUrl={FUNCTION_URL} />
+      </div>
+    </>
   );
 }
